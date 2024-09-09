@@ -1,55 +1,56 @@
-// src/features/inventorySlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
 
-// Define the shape of a product
-interface Product {
+// Define the Product type
+export interface Product {
   id: string;
   name: string;
-  quantity: number;
   category: string;
+  quantity: number;
+  dateAdded: string; // Include dateAdded property
 }
 
-// Define the shape of the slice state
+// Define the initial state type
 interface InventoryState {
   products: Product[];
-  notifications: string[];
 }
 
-// Define the initial state of the slice
+// Define the initial state
 const initialState: InventoryState = {
   products: [],
-  notifications: [],
 };
 
-// Create the slice
+// Create the inventory slice
 const inventorySlice = createSlice({
   name: 'inventory',
   initialState,
   reducers: {
-    // Add a new product to the state
-    addProduct: (state, action: PayloadAction<Product>) => {
-      state.products.push(action.payload);
+    addProduct: (state, action: PayloadAction<Omit<Product, 'id' | 'dateAdded'>>) => {
+      const newProduct: Product = {
+        ...action.payload,
+        id: uuidv4(), // Generate a unique ID
+        dateAdded: new Date().toLocaleString(), // Set the current date and time
+      };
+      state.products.push(newProduct);
     },
-    // Update an existing product in the state
     updateProduct: (state, action: PayloadAction<Product>) => {
-      const index = state.products.findIndex(product => product.id === action.payload.id);
-      if (index !== -1) {
-        state.products[index] = action.payload;
+      const { id, name, category, quantity, dateAdded } = action.payload;
+      const existingProduct = state.products.find(product => product.id === id);
+      if (existingProduct) {
+        existingProduct.name = name;
+        existingProduct.category = category;
+        existingProduct.quantity = quantity;
+        existingProduct.dateAdded = dateAdded;
       }
     },
-    // Delete a product from the state
     deleteProduct: (state, action: PayloadAction<string>) => {
       state.products = state.products.filter(product => product.id !== action.payload);
-    },
-    // Check inventory and update notifications for low stock
-    checkInventory: (state) => {
-      state.notifications = state.products
-        .filter(product => product.quantity <= 5) // Example threshold for low stock
-        .map(product => `Low stock for product: ${product.name}`);
     },
   },
 });
 
-// Export actions and reducer
-export const { addProduct, updateProduct, deleteProduct, checkInventory } = inventorySlice.actions;
+// Export the actions
+export const { addProduct, updateProduct, deleteProduct } = inventorySlice.actions;
+
+// Export the reducer
 export default inventorySlice.reducer;

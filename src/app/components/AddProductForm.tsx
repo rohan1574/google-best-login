@@ -1,11 +1,10 @@
- "use client";
+// features/AddProductForm.tsx
+import React, { useState, ChangeEvent, FormEvent } from "react";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../features/inventorySlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import { useState, ChangeEvent, FormEvent } from 'react';
-import { useDispatch } from 'react-redux';
-import { addProduct } from '../features/inventorySlice';
-import { v4 as uuidv4 } from 'uuid';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const categories = ['laptop', 'electronic', 'mobile']; // Define your categories here
 
@@ -35,7 +34,13 @@ const AddProductForm: React.FC<AddProductFormProps> = ({ onClose }) => {
     }
 
     try {
-      dispatch(addProduct({ id: uuidv4(), name, quantity, category })); // Include category
+      // Dispatch the addProduct action with only the required properties
+      dispatch(addProduct({
+        name,
+        quantity,
+        category,
+      }));
+
       toast.success('Product added successfully!');
       setName('');
       setQuantity(0);
@@ -120,10 +125,9 @@ const AddProductForm: React.FC<AddProductFormProps> = ({ onClose }) => {
           Close
         </button>
       </form>
+    
     </div>
   );
 };
 
 export default AddProductForm;
-
-

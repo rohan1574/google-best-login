@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { updateProduct, deleteProduct } from "../features/inventorySlice";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateProduct, deleteProduct } from '../features/inventorySlice';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Define the Product type
 interface Product {
@@ -10,6 +10,7 @@ interface Product {
   name: string;
   category: string;
   quantity: number;
+  dateAdded: string; // Include dateAdded property
 }
 
 // Define the props for the ProductList component
@@ -26,6 +27,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
     name: string;
     category: string;
     quantity: number;
+    dateAdded: string; // Include dateAdded property
   } | null>(null);
 
   // Function to handle the start of editing a product
@@ -35,17 +37,18 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
       name: product.name,
       category: product.category,
       quantity: product.quantity,
+      dateAdded: product.dateAdded, // Include dateAdded property
     });
   };
 
   // Function to handle the change of input fields while editing
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    field: "name" | "category" | "quantity"
+    field: 'name' | 'category' | 'quantity'
   ) => {
     setEditedProduct((prev) => ({
       ...prev!,
-      [field]: field === "quantity" ? +e.target.value : e.target.value,
+      [field]: field === 'quantity' ? +e.target.value : e.target.value,
     }));
   };
 
@@ -58,11 +61,12 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
           name: editedProduct.name,
           category: editedProduct.category,
           quantity: editedProduct.quantity,
+          dateAdded: editedProduct.dateAdded, // Include dateAdded property
         })
       );
       setEditProductId(null);
       setEditedProduct(null);
-      toast.success("Product updated successfully!");
+      toast.success('Product updated successfully!');
     }
   };
 
@@ -82,7 +86,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
             onClick={() => {
               dispatch(deleteProduct(id));
               toast.dismiss(toastId);
-              toast.success("Product deleted successfully!");
+              toast.success('Product deleted successfully!');
             }}
             className="text-red-500 hover:underline"
           >
@@ -116,6 +120,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
                 <th className="py-2 px-4 text-left text-gray-600">Name</th>
                 <th className="py-2 px-4 text-left text-gray-600">Category</th>
                 <th className="py-2 px-4 text-left text-gray-600">Quantity</th>
+                <th className="py-2 px-4 text-left text-gray-600">Date Added</th>
                 <th className="py-2 px-4 text-left text-gray-600">Actions</th>
               </tr>
             </thead>
@@ -126,8 +131,8 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
                     {editProductId === product.id ? (
                       <input
                         type="text"
-                        value={editedProduct?.name || ""}
-                        onChange={(e) => handleChange(e, "name")}
+                        value={editedProduct?.name || ''}
+                        onChange={(e) => handleChange(e, 'name')}
                         className="w-full px-2 py-1 border border-gray-300 rounded"
                       />
                     ) : (
@@ -138,8 +143,8 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
                     {editProductId === product.id ? (
                       <input
                         type="text"
-                        value={editedProduct?.category || ""}
-                        onChange={(e) => handleChange(e, "category")}
+                        value={editedProduct?.category || ''}
+                        onChange={(e) => handleChange(e, 'category')}
                         className="w-full px-2 py-1 border border-gray-300 rounded"
                       />
                     ) : (
@@ -151,12 +156,15 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
                       <input
                         type="number"
                         value={editedProduct?.quantity || 0}
-                        onChange={(e) => handleChange(e, "quantity")}
+                        onChange={(e) => handleChange(e, 'quantity')}
                         className="w-full px-2 py-1 border border-gray-300 rounded"
                       />
                     ) : (
                       product.quantity
                     )}
+                  </td>
+                  <td className="py-2 px-4 text-gray-600">
+                    {product.dateAdded} {/* Display dateAdded */}
                   </td>
                   <td className="py-2 px-4">
                     {editProductId === product.id ? (
@@ -201,10 +209,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
           </table>
         </div>
       )}
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-      />
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

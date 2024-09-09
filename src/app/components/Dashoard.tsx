@@ -62,4 +62,3 @@ const Dashboard: React.FC<DashboardProps> = ({ onToggleForm, productCount, onCat
 };
 
 export default Dashboard;
-
