@@ -11,15 +11,16 @@ interface Product {
   name: string;
   category: string;
   quantity: number;
-  dateAdded: string; // Include dateAdded property
+  dateAdded: string;
 }
 
 // Define the props for the ProductList component
 interface ProductListProps {
   products: Product[];
+  categories: string[]; // Add categories prop
 }
 
-const ProductList: React.FC<ProductListProps> = ({ products }) => {
+const ProductList: React.FC<ProductListProps> = ({ products, categories }) => {
   const dispatch = useDispatch();
 
   // Local state to handle sorting
@@ -32,7 +33,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
     name: string;
     category: string;
     quantity: number;
-    dateAdded: string; // Include dateAdded property
+    dateAdded: string;
   } | null>(null);
 
   // Function to handle sorting
@@ -50,13 +51,13 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
       name: product.name,
       category: product.category,
       quantity: product.quantity,
-      dateAdded: product.dateAdded, // Include dateAdded property
+      dateAdded: product.dateAdded,
     });
   };
 
   // Function to handle the change of input fields while editing
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     field: "name" | "category" | "quantity"
   ) => {
     setEditedProduct((prev) => ({
@@ -74,7 +75,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
           name: editedProduct.name,
           category: editedProduct.category,
           quantity: editedProduct.quantity,
-          dateAdded: editedProduct.dateAdded, // Include dateAdded property
+          dateAdded: editedProduct.dateAdded,
         })
       );
       setEditProductId(null);
@@ -204,14 +205,17 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
                   Date Added
                   <ArrowDownUp className="w-3 h-3" />
                 </th>
-                <th className="py-2 px-4 text-left text-gray-600">
-                  Actions
-                </th>
+                <th className="py-2 px-4 text-left text-gray-600">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {sortedProducts.map((product) => (
-                <tr key={product.id} className="border-b hover:bg-gray-50">
+              {sortedProducts.map((product, index) => (
+                <tr
+                  key={product.id}
+                  className={`border-b ${
+                    index % 2 === 0 ? "bg-red-100" : "bg-blue-100"
+                  } hover:bg-gray-50`}
+                >
                   <td className="py-2 px-4 text-gray-900">
                     {editProductId === product.id ? (
                       <input
@@ -226,12 +230,18 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
                   </td>
                   <td className="py-2 px-4 text-gray-600">
                     {editProductId === product.id ? (
-                      <input
-                        type="text"
+                      <select
+                        id="productCategory"
                         value={editedProduct?.category || ""}
                         onChange={(e) => handleChange(e, "category")}
-                        className="w-full px-2 py-1 border border-gray-300 rounded"
-                      />
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        {categories.map((cat) => (
+                          <option key={cat} value={cat}>
+                            {cat}
+                          </option>
+                        ))}
+                      </select>
                     ) : (
                       product.category
                     )}

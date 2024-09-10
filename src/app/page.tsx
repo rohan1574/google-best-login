@@ -20,11 +20,13 @@ const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const products = useSelector((state: RootState) => state.inventory.products);
 
+  const categories = ['laptop', 'electronic', 'mobile']; // Example categories
+
   useEffect(() => {
-    if (sessionStatus === "loading") return; // Wait for session to be determined
+    if (sessionStatus === "loading") return; 
 
     if (sessionStatus === "unauthenticated") {
-      router.replace("/"); // Redirect to login if not authenticated
+      router.replace("/"); 
     }
   }, [sessionStatus, router]);
 
@@ -41,7 +43,7 @@ const Home = () => {
     : products.filter(product => product.category === selectedCategory);
 
   if (sessionStatus === "loading") {
-    return <h1>Loading...</h1>; // Optional: Show a loading indicator while checking session status
+    return <div className="flex items-center justify-center h-screen"><h1 className="text-xl font-semibold">Loading...</h1></div>; 
   }
 
   return (
@@ -62,7 +64,10 @@ const Home = () => {
         )}
 
         <div className="w-full md:w-2/3">
-          <ProductList products={filteredProducts} />
+          <ProductList 
+            products={filteredProducts} 
+            categories={categories} // Pass the categories prop
+          />
         </div>
       </div>
 
