@@ -29,9 +29,7 @@ const Navbar = () => {
         </button>
         <div className={`lg:flex lg:items-center lg:space-x-4 ${isOpen ? 'block' : 'hidden'}`}>
           <Link href="/" className="block py-2 px-4 hover:bg-gray-700 rounded">Home</Link>
-          <Link href="/dashboard">
-            <li>Dashboard</li>
-          </Link>
+         
           {!session ? (
             <>
               <Link href="/login">
