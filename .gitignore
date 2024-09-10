@@ -9,6 +9,9 @@
 # testing
 /coverage
 
+# .gitignore
+.env
+
 # next.js
 /.next/
 /out/
