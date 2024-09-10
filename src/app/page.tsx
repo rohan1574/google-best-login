@@ -10,7 +10,6 @@ import { RootState } from './store/store';
 
 import AddProductForm from './components/AddProductForm';
 import Dashboard from './components/Dashoard';
-
 const Home = () => {
   const [showAddProductForm, setShowAddProductForm] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -33,6 +32,8 @@ const Home = () => {
 
   return (
     <div className="container mx-auto p-4">
+
+
       <h1 className="text-2xl font-bold mb-4">Inventory Management System</h1>
       
       <Dashboard 
