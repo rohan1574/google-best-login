@@ -22,8 +22,10 @@ const PieChart = () => {
   };
 
   return (
-    <div className="chart-container">
-      <Pie data={data} options={{ responsive: true }} />
+    <div className="chart-container ">
+     
+     
+      <Pie className='bg-red-200 ' data={data} options={{ responsive: true }} />
     </div>
   );
 };

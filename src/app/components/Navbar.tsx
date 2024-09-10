@@ -10,7 +10,7 @@ const Navbar = () => {
   const { data: session }: any = useSession();
 
   return (
-    <nav className="bg-gray-800 text-white p-4">
+    <nav className="bg-sky-400 text-white p-4">
       <div className="container mx-auto flex items-center justify-between">
         <Link href="/" className="text-2xl font-bold">Brand</Link>
         <button
@@ -28,14 +28,16 @@ const Navbar = () => {
           </svg>
         </button>
         <div className={`lg:flex lg:items-center lg:space-x-4 ${isOpen ? 'block' : 'hidden'}`}>
-          <Link href="/" className="block py-2 px-4 hover:bg-gray-700 rounded">Home</Link>
-         
+          <Link href="/" className="btn">Home</Link> 
+          <Link href="/barchart" className="btn">Barchart</Link>
+          <Link href="/piechart" className="btn">PieChart</Link>
+          <Link href="/linechart" className="btn">LineChart</Link>
           {!session ? (
             <>
-              <Link href="/login">
+              <Link href="/login" className="btn">
                 <li>Login</li>
               </Link>
-              <Link href="/register">
+              <Link href="/register" className="btn">
                 <li>Register</li>
               </Link>
             </>
@@ -54,9 +56,6 @@ const Navbar = () => {
               </li>
             </>
           )}
-          <Link href="/barchart" className="block py-2 px-4 hover:bg-gray-700 rounded">Barchart</Link>
-          <Link href="/piechart" className="block py-2 px-4 hover:bg-gray-700 rounded">PieChart</Link>
-          <Link href="/linechart" className="block py-2 px-4 hover:bg-gray-700 rounded">LineChart</Link>
         </div>
       </div>
     </nav>

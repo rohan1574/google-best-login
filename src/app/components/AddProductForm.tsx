@@ -56,11 +56,11 @@ const AddProductForm: React.FC<AddProductFormProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="relative bg-white shadow-md rounded-lg p-6 max-w-md mx-auto">
+    <div className="relative bg-white border-2 hover:border-b-red-500 rounded-lg p-6 max-w-md mx-auto shadow-xl shadow-purple-500">
       <button
         type="button"
         onClick={onClose}
-        className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+        className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 "
       >
         <svg
           className="w-6 h-6"
@@ -83,7 +83,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({ onClose }) => {
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter product name"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2  border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 border-2 hover:border-b-amber-400"
           />
         </div>
         <div className="mb-4">

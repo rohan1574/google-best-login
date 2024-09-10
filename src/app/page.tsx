@@ -13,6 +13,7 @@ import AddProductForm from './components/AddProductForm';
 import Dashboard from './components/Dashoard';
 
 
+
 const Home = () => {
   const router = useRouter();
   const { data: session, status: sessionStatus } = useSession();
@@ -72,7 +73,8 @@ const Home = () => {
 
       <div className="mt-8">
         <h2 className="text-xl font-semibold mb-4">Product Charts</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
+         
           <BarChart />
           <PieChart />
           <LineChart />
