@@ -35,7 +35,7 @@ const Navbar = () => {
           {!session ? (
             <>
               <Link href="/login">
-                <li>Logins</li>
+                <li>Login</li>
               </Link>
               <Link href="/register">
                 <li>Register</li>
