@@ -2,5 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
-
+/* styles/globals.css */
+@keyframes moveInAndOut {
+    0% { transform: translateX(100%); }
+    50% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+  
+  .move-in-and-out {
+    animation: moveInAndOut 5s ease-in-out infinite;
+    white-space: nowrap; /* Prevent text wrapping */
+  }
+  
+  /* Other global styles */
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  
+  
+  
+  
 

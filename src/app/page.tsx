@@ -47,8 +47,7 @@ const Home = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Inventory Management System</h1>
+    <div className="container mx-auto p-4 max-w-7xl ">
       
       <Dashboard 
         onToggleForm={toggleAddProductForm} 
@@ -58,12 +57,12 @@ const Home = () => {
       
       <div className="flex flex-col md:flex-row gap-6 mt-6">
         {showAddProductForm && (
-          <div className="w-full md:w-1/3">
+          <div className="w-full md:w-1/2">
             <AddProductForm onClose={() => setShowAddProductForm(false)} />
           </div>
         )}
 
-        <div className="w-full md:w-2/3">
+        <div className="w-full md:w-full">
           <ProductList 
             products={filteredProducts} 
             categories={categories} // Pass the categories prop
