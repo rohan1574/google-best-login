@@ -24,7 +24,7 @@ const Home = () => {
     if (sessionStatus === "loading") return; // Wait for session to be determined
 
     if (sessionStatus === "unauthenticated") {
-      router.replace("/login"); // Redirect to login if not authenticated
+      router.replace("/"); // Redirect to login if not authenticated
     }
   }, [sessionStatus, router]);
 

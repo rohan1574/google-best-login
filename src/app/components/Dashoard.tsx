@@ -12,7 +12,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onToggleForm, productCount, onCat
   return (
     <div className="flex flex-col md:flex-row justify-between mb-8">
       <div>
-        <p className="text-gray-600">Information</p>
+        <p className="text-gray-600">Information Next-Management-System</p>
       </div>
       <div className="flex flex-col md:flex-row md:items-center md:gap-5">
         <h1 className="text-2xl font-bold mb-4 md:mb-0">Dashboard</h1>

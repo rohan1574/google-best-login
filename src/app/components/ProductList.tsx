@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { updateProduct, deleteProduct } from '../features/inventorySlice';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateProduct, deleteProduct } from "../features/inventorySlice";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ArrowDownUp } from "lucide-react";
 
 // Define the Product type
 interface Product {
@@ -21,6 +22,10 @@ interface ProductListProps {
 const ProductList: React.FC<ProductListProps> = ({ products }) => {
   const dispatch = useDispatch();
 
+  // Local state to handle sorting
+  const [sortField, setSortField] = useState<keyof Product | null>(null);
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+
   // Local state to handle editing a product
   const [editProductId, setEditProductId] = useState<string | null>(null);
   const [editedProduct, setEditedProduct] = useState<{
@@ -29,6 +34,14 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
     quantity: number;
     dateAdded: string; // Include dateAdded property
   } | null>(null);
+
+  // Function to handle sorting
+  const handleSort = (field: keyof Product) => {
+    const direction =
+      sortField === field ? (sortDirection === "asc" ? "desc" : "asc") : "asc";
+    setSortField(field);
+    setSortDirection(direction);
+  };
 
   // Function to handle the start of editing a product
   const handleEditClick = (product: Product) => {
@@ -44,11 +57,11 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
   // Function to handle the change of input fields while editing
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    field: 'name' | 'category' | 'quantity'
+    field: "name" | "category" | "quantity"
   ) => {
     setEditedProduct((prev) => ({
       ...prev!,
-      [field]: field === 'quantity' ? +e.target.value : e.target.value,
+      [field]: field === "quantity" ? +e.target.value : e.target.value,
     }));
   };
 
@@ -66,7 +79,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
       );
       setEditProductId(null);
       setEditedProduct(null);
-      toast.success('Product updated successfully!');
+      toast.success("Product updated successfully!");
     }
   };
 
@@ -86,7 +99,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
             onClick={() => {
               dispatch(deleteProduct(id));
               toast.dismiss(toastId);
-              toast.success('Product deleted successfully!');
+              toast.success("Product deleted successfully!");
             }}
             className="text-red-500 hover:underline"
           >
@@ -107,6 +120,26 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
     );
   };
 
+  // Sort products based on the current sort field and direction
+  const sortedProducts = [...products].sort((a, b) => {
+    if (sortField === null) return 0;
+
+    const aValue = a[sortField];
+    const bValue = b[sortField];
+
+    if (typeof aValue === "string" && typeof bValue === "string") {
+      return sortDirection === "asc"
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
+    }
+
+    if (typeof aValue === "number" && typeof bValue === "number") {
+      return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
+    }
+
+    return 0;
+  });
+
   return (
     <div className="mt-8">
       <h2 className="text-xl font-semibold mb-4">Product List</h2>
@@ -117,22 +150,74 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
           <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
             <thead className="bg-gray-100 border-b">
               <tr>
-                <th className="py-2 px-4 text-left text-gray-600">Name</th>
-                <th className="py-2 px-4 text-left text-gray-600">Category</th>
-                <th className="py-2 px-4 text-left text-gray-600">Quantity</th>
-                <th className="py-2 px-4 text-left text-gray-600">Date Added</th>
-                <th className="py-2 px-4 text-left text-gray-600">Actions</th>
+                <th
+                  onClick={() => handleSort("name")}
+                  className="py-2 px-4 text-left text-gray-600 cursor-pointer"
+                >
+                  Name
+                  <ArrowDownUp
+                    className={`w-3 h-3 ml-2 ${
+                      sortField === "name"
+                        ? sortDirection === "asc"
+                          ? "rotate-180"
+                          : ""
+                        : ""
+                    }`}
+                  />
+                </th>
+
+                <th
+                  onClick={() => handleSort("category")}
+                  className="py-2 px-4 text-left text-gray-600 cursor-pointer"
+                >
+                  Category
+                  <ArrowDownUp
+                    className={`w-3 h-3  ${
+                      sortField === "category"
+                        ? sortDirection === "asc"
+                          ? "rotate-180"
+                          : ""
+                        : ""
+                    }`}
+                  />
+                </th>
+
+                <th
+                  onClick={() => handleSort("quantity")}
+                  className="py-2 px-4 text-left text-gray-600 cursor-pointer"
+                >
+                  Quantity
+                  <ArrowDownUp
+                    className={`w-3 h-3 ${
+                      sortField === "quantity"
+                        ? sortDirection === "asc"
+                          ? "rotate-180"
+                          : ""
+                        : ""
+                    }`}
+                  />
+                </th>
+                <th
+                  onClick={() => handleSort("dateAdded")}
+                  className="py-2 px-4 text-left text-gray-600 cursor-pointer"
+                >
+                  Date Added
+                  <ArrowDownUp className="w-3 h-3" />
+                </th>
+                <th className="py-2 px-4 text-left text-gray-600">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
+              {sortedProducts.map((product) => (
                 <tr key={product.id} className="border-b hover:bg-gray-50">
                   <td className="py-2 px-4 text-gray-900">
                     {editProductId === product.id ? (
                       <input
                         type="text"
-                        value={editedProduct?.name || ''}
-                        onChange={(e) => handleChange(e, 'name')}
+                        value={editedProduct?.name || ""}
+                        onChange={(e) => handleChange(e, "name")}
                         className="w-full px-2 py-1 border border-gray-300 rounded"
                       />
                     ) : (
@@ -143,8 +228,8 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
                     {editProductId === product.id ? (
                       <input
                         type="text"
-                        value={editedProduct?.category || ''}
-                        onChange={(e) => handleChange(e, 'category')}
+                        value={editedProduct?.category || ""}
+                        onChange={(e) => handleChange(e, "category")}
                         className="w-full px-2 py-1 border border-gray-300 rounded"
                       />
                     ) : (
@@ -156,7 +241,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
                       <input
                         type="number"
                         value={editedProduct?.quantity || 0}
-                        onChange={(e) => handleChange(e, 'quantity')}
+                        onChange={(e) => handleChange(e, "quantity")}
                         className="w-full px-2 py-1 border border-gray-300 rounded"
                       />
                     ) : (
@@ -164,7 +249,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
                     )}
                   </td>
                   <td className="py-2 px-4 text-gray-600">
-                    {product.dateAdded} {/* Display dateAdded */}
+                    {product.dateAdded}
                   </td>
                   <td className="py-2 px-4">
                     {editProductId === product.id ? (
@@ -172,14 +257,14 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
                         <button
                           onClick={handleSaveClick}
                           className="text-green-500 hover:underline"
-                          aria-label="Save changes"
+                          aria-label="Save product"
                         >
                           Save
                         </button>
                         <button
                           onClick={handleCancelClick}
-                          className="text-red-500 hover:underline"
-                          aria-label="Cancel editing"
+                          className="text-gray-500 hover:underline"
+                          aria-label="Cancel"
                         >
                           Cancel
                         </button>
@@ -209,7 +294,7 @@ const ProductList: React.FC<ProductListProps> = ({ products }) => {
           </table>
         </div>
       )}
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer />
     </div>
   );
 };

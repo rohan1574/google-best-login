@@ -1,18 +1,20 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react"; // Import Eye and EyeOff icons
 
 const Login = () => {
   const router = useRouter();
   const [error, setError] = useState("");
-  // const session = useSession();
+  const [passwordVisible, setPasswordVisible] = useState(false); // State for password visibility
   const { data: session, status: sessionStatus } = useSession();
 
   useEffect(() => {
     if (sessionStatus === "authenticated") {
-      router.replace("/dashboard");
+      router.replace("/");
     }
   }, [sessionStatus, router]);
 
@@ -44,7 +46,8 @@ const Login = () => {
 
     if (res?.error) {
       setError("Invalid email or password");
-      if (res?.url) router.replace("/dashboard");
+    } else if (res?.url) {
+      router.replace("/");
     } else {
       setError("");
     }
@@ -66,17 +69,25 @@ const Login = () => {
               placeholder="Email"
               required
             />
-            <input
-              type="password"
-              className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black"
-              placeholder="Password"
-              required
-            />
+            <div className="relative">
+              <input
+                type={passwordVisible ? "text" : "password"} // Toggle between text and password
+                className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black"
+                placeholder="Password"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setPasswordVisible(prev => !prev)}
+                className="absolute inset-y-0 right-0 flex items-center pr-3"
+              >
+                {passwordVisible ? <EyeOff className="text-gray-400" /> : <Eye className="text-gray-400" />}
+              </button>
+            </div>
             <button
               type="submit"
               className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
             >
-              {" "}
               Sign In
             </button>
             <p className="text-red-600 text-[16px] mb-4">{error && error}</p>
@@ -111,3 +122,7 @@ const Login = () => {
 };
 
 export default Login;
+
+
+
+
