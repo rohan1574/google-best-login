@@ -25,7 +25,7 @@ const Home = () => {
     if (sessionStatus === "loading") return;
 
     if (sessionStatus === "unauthenticated") {
-      router.replace("/");
+      router.replace("/login");
     }
   }, [sessionStatus, router]);
 
