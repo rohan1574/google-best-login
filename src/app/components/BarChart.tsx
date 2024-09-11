@@ -39,8 +39,32 @@ const BarChart = () => {
   };
 
   return (
-    <div className="chart-container ">
-      <Bar className='bg-red-200 ' data={data} options={{ responsive: true }} />
+    <div className="chart-container h-full">
+      <Bar
+        className="bg-white p-4 shadow-md rounded-lg"
+        data={data}
+        options={{
+          responsive: true,
+          maintainAspectRatio: false, // Ensures responsiveness
+          scales: {
+            x: {
+              beginAtZero: true,
+            },
+            y: {
+              beginAtZero: true,
+            },
+          },
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: 'Product Quantity Overview',
+            },
+          },
+        }}
+      />
     </div>
   );
 };

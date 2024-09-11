@@ -17,15 +17,29 @@ const PieChart = () => {
       {
         data: products.map(product => product.quantity),
         backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'], // Example colors
+        hoverOffset: 4,
       },
     ],
   };
 
   return (
-    <div className="chart-container ">
-     
-     
-      <Pie className='bg-red-200 ' data={data} options={{ responsive: true }} />
+    <div className="chart-container h-full">
+      <Pie
+        className="bg-white p-4 shadow-md rounded-lg"
+        data={data}
+        options={{
+          responsive: true,
+          maintainAspectRatio: false, // Ensures the pie chart is responsive
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            tooltip: {
+              enabled: true,
+            },
+          },
+        }}
+      />
     </div>
   );
 };

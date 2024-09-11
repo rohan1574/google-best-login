@@ -12,7 +12,7 @@ const Navbar = () => {
   return (
     <nav className="bg-sky-400 text-white p-4">
       <div className="container mx-auto flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold">Brand</Link>
+        <Link href="/" className="text-2xl font-bold">Inventory Management</Link>
         <button
           className="lg:hidden p-2"
           onClick={() => setIsOpen(prev => !prev)}
